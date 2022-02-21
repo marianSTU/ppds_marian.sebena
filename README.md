@@ -10,3 +10,14 @@ When you click on links below you will be redirected on resource web page </br>
 **[UIM/PPDS](https://uim.fei.stuba.sk/i-ppds/1-cvicenie-oboznamenie-sa-s-prostredim-%f0%9f%90%8d/)** <br/>
 **[.md syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)** <br/>
 **[Timer](https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution)** <br/>
+
+### Lock while loop
+This option is the easiest way to understand and implement. As we can see in xxx,
+whole ***while loop*** is lock. It means that only one thread can execute ***loop*** while second thread waits.
+Second thread have to wait until first thread pass the lock.
+#### Sum up: Shared object's index increments only one thread. 
+
+### Lock while loop
+#### Sum up: 
+
+### Experiments
