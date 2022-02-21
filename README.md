@@ -9,3 +9,4 @@ When you click on links below you will be redirected on resource web page </br>
 **[PEP8](https://realpython.com/python-pep8/#naming-conventions)** <br/>
 **[UIM/PPDS](https://uim.fei.stuba.sk/i-ppds/1-cvicenie-oboznamenie-sa-s-prostredim-%f0%9f%90%8d/)** <br/>
 **[.md syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)** <br/>
+**[Timer](https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution)** <br/>
