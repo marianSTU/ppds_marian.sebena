@@ -15,10 +15,13 @@ def do_count(shared):
         shared.counter += 1
 
 
-shared = Shared(1000)
+shared = Shared(1000000)
 
 t1 = Thread(do_count, shared)
+t2 = Thread(do_count, shared)
+
 t1.join()
+t2.join()
 
 counter = Counter(shared.elms)
 print(counter.most_common())
