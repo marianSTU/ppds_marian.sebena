@@ -1,5 +1,6 @@
 # Documentation exercise 01  
 ###### Written by Marián Šebeňa
+###### Python Interpreter 3.9
 ### Assigment 
 You can find assigment on this  **[link](https://uim.fei.stuba.sk/i-ppds/1-cvicenie-oboznamenie-sa-s-prostredim-%f0%9f%90%8d/).** 
 #### Short description 
