@@ -3,13 +3,19 @@ from fei.ppds import Mutex, Thread
 
 
 class Shared:
+    """"Object Shared for multiple threads using demonstration"""
+
     def __init__(self, size):
+        """"Shared class constructor"""
+
         self.counter = 0
         self.end = size
         self.elms = [0] * size
 
 
 def do_count(shared):
+    """Function which increments shared counter and fill array of elms"""
+
     mutex.lock()
     while shared.counter != shared.end:
         shared.elms[shared.counter] += 1
