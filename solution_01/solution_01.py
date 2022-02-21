@@ -10,16 +10,16 @@ class Shared:
 
 
 def do_count(shared):
-    m.lock()
+    mutex.lock()
     while shared.counter != shared.end:
         shared.elms[shared.counter] += 1
         shared.counter += 1
-    m.unlock()
+    mutex.unlock()
 
 
 shared = Shared(1000000)
 
-m = Mutex()
+mutex = Mutex()
 
 t1 = Thread(do_count, shared)
 t2 = Thread(do_count, shared)
