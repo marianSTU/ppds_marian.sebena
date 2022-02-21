@@ -6,7 +6,7 @@ class Shared:
     def __init__(self, size):
         self.counter = 0
         self.end = size
-        self.elms = [0]
+        self.elms = [0] * size
 
 
 def do_count(shared):
