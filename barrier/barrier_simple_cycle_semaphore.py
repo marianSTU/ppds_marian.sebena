@@ -32,10 +32,10 @@ class SimpleBarrier:
     def wait(self):
         self.M.lock()
         self.C += 1
+        self.M.unlock()
         if self.C == self.N:
             self.C = 0
             self.T.signal(self.N)
-        self.M.unlock()
         self.T.wait()
 
 
