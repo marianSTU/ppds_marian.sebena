@@ -39,10 +39,30 @@ def barrier_example(barrier, thread_id):
     print("Thread no. %d after barrier" % thread_id)
 
 
-# priklad pouzitia ADT SimpleBarrier
-sb = SimpleBarrier(10)
+def before_barrier(thread_id):
+    # sleep(randint(1, 10)/10)
+    print(f"before barrier {thread_id}")
 
-threads = [Thread(barrier_example, sb, i) for i in range(10)]
+
+def after_barrier(thread_id):
+    print(f"after barrier {thread_id}")
+    # sleep(randint(1, 10)/10)
+
+
+def barrier_cycle(barrier1, barrier2, thread_id):
+    while True:
+        before_barrier(thread_id)
+        barrier1.wait()
+        after_barrier(thread_id)
+        barrier2.wait()
+
+
+# example ADT SimpleBarrier
+THREADS = 10
+sb = SimpleBarrier(10)
+sb2 = SimpleBarrier(10)
+
+threads = [Thread(barrier_cycle, sb, sb2, i) for i in range(10)]
 [t.join() for t in threads]
 
 
