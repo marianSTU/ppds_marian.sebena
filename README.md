@@ -16,23 +16,26 @@ When you click on links below you will be redirected on resource web page: </br>
 **[PPDS Youtube channel](https://www.youtube.com/channel/UCnTxtvNFlicb2Mn0a6w8N-A)** <br/>
 **[UIM/PPDS](https://uim.fei.stuba.sk/i-ppds/2-cvicenie-turniket-bariera-%f0%9f%9a%a7/?%2F)** <br/>
 **[Semaphores in Process Synchronization](https://www.geeksforgeeks.org/semaphores-in-process-synchronization/)** <br/>
-
+**[Parallel algorithm](https://people.engr.tamu.edu/andreas-klappenecker/csce411-f12/csce411-setMultithreaded.pdf)** <br/>
 ### Barriers
 Simply barriers are good to understand. But when I tested code there were a lot of situations where program should not
 work, but surprisingly worked and in opposite way too.
 First implementation was simple barrier without loop. This Semaphore release threads randomly.
-In next implementation we try barrier inside a loop. We noticed problem with one barrier, that did not occur on lecture. In my
-machine on 3.9 interpreter this problem occurred. When we implement second barrier code worked correctly. In last implementation 
-we tried to replace logic with semaphore with events. But we noticed problems, because events release all threads in same time.
+In next implementation we try barrier inside a loop. We noticed problem with one barrier used twice, that did not occur on lecture. On my
+machine on 3.9 interpreter this problem occurred. When we implement second barrier (turnstile) code worked correctly. In last implementation 
+we tried to replace logic semaphore with events. But we noticed problems, because events release all threads in same time.
 As first, we released event's flag after that lock thread increment counter then unlock thread. In my opinion is not necessary to
 hold lock longer. When all threads arrive to barrier they are released.
 
 
 #### Sum up: Events - release all threads now/straight, Semaphore - release threads randomly. 
 
-### Fibonacci
+### Fibonacci: 
+Unfortunately I didn't find correct solution of this problem, but I try a few experiments I want share.
+Make turnstile from 2 barriers. It didn't work correctly because threads computes unordered, and I was not able to find
+correct result. Sometimes the result was correct, but it was only lottery.
 
-#### Sum up: 
+#### Sum up: On next week start immediately after lecture
 
 
 
