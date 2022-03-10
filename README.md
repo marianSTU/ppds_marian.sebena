@@ -38,17 +38,41 @@ def producer(shared):
 def consumer(shared):
     while True:
         shared.items.wait()
+        shared.items_exported += 1
         if shared.finished:
             break
         shared.mutex.lock()
-        sleep(randint(1, 10) / 100)
         shared.storage -= 1
         shared.mutex.unlock()
-        shared.items.signal()
-        sleep(randint(1, 10) / 10)
+        shared.free.signal()
+        sleep(randint(1, 10) / 250)
 ```
 
-#### Sum up: 
+#### Experiment 1: Comparison of created and produced items with differnt number of producers and consumers
+
+In first experiment we tested different values of producers and consumers
+with constant production and exportation time. Size of storage was 10 items
+###### Test 1: Rising number of producers with same size of consumers
+In the first example we can see that best parameters was 2 producers and 2 consumers. When the
+number of producers and consumers grows fewer items was created, reason why is probably size of 
+storage when no more producers(with comparison of 2 consumers) were needed.
+
+![plot](./plots/exp2.jpg)
+###### Test 2: Producers are double sized than consumers 
+In the second example we could see that much more items were produced and exported than
+in first testing. In my opinion it is because this ratio is really near to optimum.
+
+![plot](./plots/exp1.jpg)
+###### Test 3: Producers are triple sized than consumers 
+Surprisingly the third testing was pretty same as second. 
+At first glance, we could not say why, but after more careful thought, we concluded that 
+this may be due to the fact that consumers did not manage to export items fast enough
+
+![plot](./plots/exp3.jpg)
+
+
+
+
 
 
 
