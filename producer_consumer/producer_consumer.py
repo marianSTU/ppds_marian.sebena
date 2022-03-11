@@ -92,7 +92,7 @@ def plot(data):
 
 def main():
     """
-    Main function implements xxx of finding best sizes of producers and consumers
+    Main function implements options of finding best sizes of producers and consumers
     """
     searches = 10
     storage_size = 10
