@@ -46,7 +46,6 @@ def producer(shared):
         if shared.finished:
             break
         shared.mutex.lock()
-        # sleep(randint(1, 10) / 500)
         shared.storage += 1
         shared.mutex.unlock()
         shared.items.signal()
@@ -66,7 +65,6 @@ def consumer(shared):
         if shared.finished:
             break
         shared.mutex.lock()
-        # sleep(randint(1, 10) / 500)
         shared.storage -= 1
         shared.mutex.unlock()
         shared.free.signal()
@@ -87,8 +85,8 @@ def plot(data):
     ax.plot_trisurf(x, y, z, cmap='Oranges', edgecolor='none')
     ax.set_title('Graph')
     ax.set_xlabel('number of producers')
-    ax.set_ylabel('items_created')
-    ax.set_zlabel('items_exported')
+    ax.set_ylabel('items_exported_per_sec')
+    ax.set_zlabel('items_produced_per_sec')
     plt.show()
 
 
@@ -99,14 +97,14 @@ def main():
     searches = 10
     storage_size = 10
     data = []
-    # program time counter starts
-    start_time = time.time()
+    # grid search
     for i in range(1, 10):
         for j in range(searches):
+            start_time = time.time()
             s = Shared(storage_size)
-            # number of producers is double size than consumers
-            cons = [Thread(consumer, s) for _ in range(i)]
-            prod = [Thread(producer, s) for _ in range(i*2)]
+            # number of consumers is still same size, producers rise
+            cons = [Thread(consumer, s) for _ in range(3)]
+            prod = [Thread(producer, s) for _ in range(i)]
             sleep(5)
             s.finished = True
 
@@ -115,11 +113,15 @@ def main():
             s.free.signal(100)
             [t.join() for t in cons + prod]
 
-            items_created = s.items_produced
+            items_produced = s.items_produced
             items_exported = s.items_exported
-            data.append([i, items_created, items_exported])
-    # program time counter ends
-    print("%s seconds" % (time.time() - start_time))
+
+            # calculation of items produced/exported per second
+            end_time = time.time() - start_time
+            production_per_sec = items_produced / end_time
+            export_per_sec = items_exported / end_time
+            # append points to data array due to graph plotting
+            data.append([i, export_per_sec, production_per_sec])
     plot(data)
 
 
