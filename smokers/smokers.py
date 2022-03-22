@@ -26,7 +26,11 @@ class Shared(object):
         self.isTobacco = 0
         self.isMatch = 0
         self.isPaper = 0
-        self.agentSem = Semaphore(1)
+
+        self.made_tobacco = 0
+        self.made_match = 0
+        self.made_paper = 0
+
 
 
 def agent_1(shared):
@@ -52,8 +56,8 @@ def agent_3(shared):
         sleep(randint(0, 10)/100)
         # shared.agentSem.wait()
         print("agent: tobacco, match ==> smoker 'paper'")
-        shared.tobacco.signal()
         shared.match.signal()
+        shared.tobacco.signal()
 
 
 def make_cigarette(name):
@@ -71,7 +75,9 @@ def smoker_match(shared):
         sleep(randint(0, 10)/100)
         shared.pusherMatch.wait()
         make_cigarette("match")
-        shared.agentSem.signal()
+        shared.made_match += 1
+        print(f"cigarettes made: tobacco:{shared.made_tobacco} "
+              f"paper:{shared.made_paper} match:{shared.made_match}")
         smoke("smoker match")
 
 
@@ -80,7 +86,9 @@ def smoker_tobacco(shared):
         sleep(randint(0, 10) / 100)
         shared.pusherTobacco.wait()
         make_cigarette("tobacco")
-        shared.agentSem.signal()
+        shared.made_tobacco += 1
+        print(f"cigarettes made: tobacco:{shared.made_tobacco} "
+              f"paper:{shared.made_paper} match:{shared.made_match}")
         smoke("smoker tobacco")
 
 
@@ -89,7 +97,9 @@ def smoker_paper(shared):
         sleep(randint(0, 10) / 100)
         shared.pusherPaper.wait()
         make_cigarette("paper")
-        shared.agentSem.signal()
+        shared.made_paper += 1
+        print(f"cigarettes made: tobacco:{shared.made_tobacco} "
+              f"paper:{shared.made_paper} match:{shared.made_match}")
         smoke("smoker paper")
 
 
@@ -97,12 +107,12 @@ def pusher_match(shared):
     while True:
         shared.match.wait()
         shared.mutex.lock()
-        if shared.isTobacco:
-            shared.isTobacco -= 1
-            shared.pusherPaper.signal()
-        elif shared.isPaper:
+        if shared.isPaper:
             shared.isPaper -= 1
             shared.pusherTobacco.signal()
+        elif shared.isTobacco:
+            shared.isTobacco -= 1
+            shared.pusherPaper.signal()
         else:
             shared.isMatch += 1
         shared.mutex.unlock()
@@ -112,12 +122,12 @@ def pusher_paper(shared):
     while True:
         shared.paper.wait()
         shared.mutex.lock()
-        if shared.isMatch:
-            shared.isMatch -= 1
-            shared.pusherTobacco.signal()
-        elif shared.isTobacco:
+        if shared.isTobacco:
             shared.isTobacco -= 1
             shared.pusherMatch.signal()
+        elif shared.isMatch:
+            shared.isMatch -= 1
+            shared.pusherTobacco.signal()
         else:
             shared.isPaper += 1
         shared.mutex.unlock()
