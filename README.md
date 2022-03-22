@@ -93,3 +93,79 @@ exp1: cigarettes made: tobacco:93 paper:96 match:100
 exp2: cigarettes made: tobacco:100 paper:99 match:98
 exp3: cigarettes made: tobacco:97 paper:100 match:93
 ```
+
+### Savages
+
+In solution problem of savages we inspire by code from lecture where Mgr. Ing. Matúš Jókay, PhD. use
+double barrier to secure integrity between savages and one cook. In upgraded solution with more cook
+is pretty similar.In first iteration(pot is empty) savages cross barrier and when last one cross 
+wakes a cooks. Now all savages are waiting for a full pot. We implement double barrier in cook's function as well.
+Cook cross barrier and last one says "We are all lets go cooking" then every cook make one meal after pot is full again.
+Then cook sleep again and savages could eat. We work with 18 meals pot capacity,
+9 savages and 3 cook. Below we can see pseudocode and example print.
+
+##### Pseudocode for cook and savages
+
+```
+FUNCTION cook(cook_id, shared):
+    // wait until savages have empty pot
+    shared.empty_pot.wait()
+
+    WHILE TRUE:
+        //input barriers
+        shared.cook_barrier1.wait()
+        shared.cook_barrier2.wait()
+        
+        // secure serializing execution
+        shared.mutex_cooks.lock()
+        
+        //control if pot is already full
+        IF shared.servings == POT_CAPACITY:
+            PRINT(pot is FULL)
+            //release savages
+            shared.full_pot.signal()
+            //sleep cook until savages have empty pot
+            shared.empty_pot.wait()
+        
+        PRINT(Cook with cook_id making meal)
+        //simulation of time for cooking
+        sleep(0.5 - 0.1s)
+        //add meal to pot
+        shared.servings += 1
+        shared.mutex_cooks.unlock()
+    END WHILE
+END FUNCTION
+
+FUNCTION savage(savage_id, shared):
+    // wait until savages have empty pot
+    shared.empty_pot.wait()
+
+    WHILE TRUE:
+        //input barriers
+        shared.cook_barrier1.wait()
+        shared.cook_barrier2.wait()
+        
+        // secure serializing execution
+        shared.mutex_cooks.lock()
+        
+        //control if pot is already empty
+        IF shared.servings == 0:
+            PRINT(pot is empty")
+            //wake up all cook
+            shared.empty_pot.signal(NUMBER_OF_COOK)
+            //wait until cook make full pot
+            shared.full_pot.wait()
+            
+        PRINT(savage with savage_id takes from pot)
+        //take meal from pot
+        shared.servings -= 1
+        shared.mutex.unlock()
+        
+        //simulation of eating
+        sleep(0.5 - 0.1s)
+    END WHILE
+END FUNCTION
+```
+##### Example print
+
+![plot](./img/ll.jpg)
