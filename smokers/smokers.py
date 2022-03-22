@@ -13,7 +13,14 @@ from fei.ppds import print, Semaphore, Thread, Mutex
 
 
 class Shared(object):
+    """
+    Class that implements synchronization objects and counters
+    """
     def __init__(self):
+        """
+        Class constructor initialize counters on zero, creates semaphore
+        for each pusher and smoker and creates Mutex object
+        """
         self.tobacco = Semaphore(0)
         self.paper = Semaphore(0)
         self.match = Semaphore(0)
@@ -32,45 +39,73 @@ class Shared(object):
         self.made_paper = 0
 
 
-
 def agent_1(shared):
+    """
+    Function that represents tobacco and paper provider
+    :param shared: Shared object
+    :return:
+    """
     while True:
         sleep(randint(0, 10)/100)
-        # shared.agentSem.wait()
         print("agent: tobacco, paper ==> smoker 'match'")
         shared.tobacco.signal()
         shared.paper.signal()
 
 
 def agent_2(shared):
+    """
+    Function that represents match and paper provider
+    :param shared: Shared object
+    :return:
+    """
     while True:
         sleep(randint(0, 10)/100)
-        # shared.agentSem.wait()
         print("agent: paper, match ==> smoker 'tobacco'")
         shared.paper.signal()
         shared.match.signal()
 
 
 def agent_3(shared):
+    """
+    Function that represents match and tobacco provider
+    :param shared: Shared object
+    :return:
+    """
     while True:
         sleep(randint(0, 10)/100)
-        # shared.agentSem.wait()
         print("agent: tobacco, match ==> smoker 'paper'")
         shared.match.signal()
         shared.tobacco.signal()
 
 
 def make_cigarette(name):
+    """
+    Function represents cigarette production time
+    :param name: smoker name
+    :return:
+    """
     print(f"{name} makes cigarette")
     sleep(randint(0, 10)/100)
 
 
 def smoke(name):
+    """
+    Function represents smoking time
+    :param name: smoker name
+    :return:
+    """
     print(f"{name} smokes")
     sleep(randint(0, 10)/100)
 
 
 def smoker_match(shared):
+    """
+    Function that represents smoker with infinite amount of matches.
+    Waits for permit from pusher to start making cigarettes.
+    Increment made_match cigarettes counter
+    :param shared: Shared object
+    :return:
+    """
     while True:
         sleep(randint(0, 10)/100)
         shared.pusherMatch.wait()
@@ -82,6 +117,13 @@ def smoker_match(shared):
 
 
 def smoker_tobacco(shared):
+    """
+    Function that represents smoker with infinite amount of tobacco.
+    Waits for permit from pusher to start making cigarettes.
+    Increment made_tobacco cigarettes counter
+    :param shared: Shared object
+    :return:
+    """
     while True:
         sleep(randint(0, 10) / 100)
         shared.pusherTobacco.wait()
@@ -93,6 +135,13 @@ def smoker_tobacco(shared):
 
 
 def smoker_paper(shared):
+    """
+    Function that represents smoker with infinite amount of paper.
+    Waits for permit from pusher to start making cigarettes.
+    Increment made_paper cigarettes counter
+    :param shared: Shared object
+    :return:
+    """
     while True:
         sleep(randint(0, 10) / 100)
         shared.pusherPaper.wait()
@@ -104,6 +153,12 @@ def smoker_paper(shared):
 
 
 def pusher_match(shared):
+    """
+    Function represents dealer who manage resources.
+    Provides matches.
+    :param shared: Shared object
+    :return:
+    """
     while True:
         shared.match.wait()
         shared.mutex.lock()
@@ -119,6 +174,12 @@ def pusher_match(shared):
 
 
 def pusher_paper(shared):
+    """
+    Function represents dealer who manage resources.
+    Provides paper.
+    :param shared: Shared object
+    :return:
+    """
     while True:
         shared.paper.wait()
         shared.mutex.lock()
@@ -134,6 +195,12 @@ def pusher_paper(shared):
 
 
 def pusher_tobacco(shared):
+    """
+    Function represents dealer who manage resources.
+    Provides tobacco.
+    :param shared: Shared object
+    :return:
+    """
     while True:
         shared.tobacco.wait()
         shared.mutex.lock()
@@ -149,11 +216,21 @@ def pusher_tobacco(shared):
 
 
 def main():
+    """
+    Function initialize and join threads
+    :return:
+    """
     shared = Shared()
 
-    smokers = [Thread(smoker_match, shared), Thread(smoker_tobacco, shared), Thread(smoker_paper, shared)]
-    pushers = [Thread(pusher_match, shared), Thread(pusher_paper, shared), Thread(pusher_tobacco, shared)]
-    agents = [Thread(agent_1, shared), Thread(agent_2, shared), Thread(agent_3, shared)]
+    smokers = [Thread(smoker_match, shared),
+               Thread(smoker_tobacco, shared),
+               Thread(smoker_paper, shared)]
+    pushers = [Thread(pusher_match, shared),
+               Thread(pusher_paper, shared),
+               Thread(pusher_tobacco, shared)]
+    agents = [Thread(agent_1, shared),
+              Thread(agent_2, shared),
+              Thread(agent_3, shared)]
 
     for t in smokers+agents+pushers:
         t.join()
