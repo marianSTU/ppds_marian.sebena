@@ -46,5 +46,50 @@ It looks pretty cool and correct. But in our opinion could occur a situation whe
 could overrun this thread and go through first wait. And in next iteration don't control two missing
 resources but only one and the problem turns out.
 
+##### Advanced solution
 
+To avoid problem we mentioned let's look on Mgr. Ing. Matúš Jókay, PhD. solution from lecture. After all we added to
+previous solution another three threads of dealers. Why? Because we want control which components are free and which
+are already use. In first case we use boolean values to control it, but it's not enough. Because real operating system 
+just provides resources and doesn't wait. Then we have to replace true/false values by numbers, and then we have complete
+information about provided resources.
 
+##### Threads advantage
+
+The last thing we consider is advantage of some threads. We add to object shared three variables to count how many
+cigarettes produce each smoker. Then we print values always when smoker produce cigarette 
+```
+self.made_tobacco = 0
+self.made_match = 0
+self.made_paper = 0
+.
+.
+.
+print(f"cigarettes made: tobacco:{shared.made_tobacco} "
+      f"paper:{shared.made_paper} match:{shared.made_match}")
+```
+<b>Conclusion:</b> After small resource you can see below. We can't 100% say that depends on order of comparison in 
+pusher's functions, but most of the time when resource always compares first reach 100 cigarettes first. On the other hand when
+resource compares first just once from 3 experiments we have 3 different resolutions.
+
+```
+Tobacco always compare as first
+exp1: cigarettes made: tobacco:100 paper:87 match:91
+exp2: cigarettes made: tobacco:97 paper:96 match:100
+exp3: cigarettes made: tobacco:100 paper:95 match:92
+
+Paper always compare as first
+exp1: cigarettes made: tobacco:96 paper:100 match:94
+exp2: cigarettes made: tobacco:100 paper:100 match:96
+exp3: cigarettes made: tobacco:99 paper:100 match:92
+
+Match always compare as first
+exp1: cigarettes made: tobacco:86 paper:90 match:100
+exp2: cigarettes made: tobacco:98 paper:96 match:100
+exp3: cigarettes made: tobacco:95 paper:96 match:100
+
+Match, Tobacco, Paper start once
+exp1: cigarettes made: tobacco:93 paper:96 match:100
+exp2: cigarettes made: tobacco:100 paper:99 match:98
+exp3: cigarettes made: tobacco:97 paper:100 match:93
+```
