@@ -13,8 +13,15 @@ from random import randint
 
 
 class Shared(object):
-
+    """
+    Class that implements synchronization objects and counters
+    """
     def __init__(self):
+        """
+       Class constructor initialize  creates 4 semaphore's
+       for barber and customer states, creates Mutex object, and
+       waiting room counter
+       """
         self.mutex = Mutex()
         self.waiting_room = 0
         self.customer = Semaphore(0)
@@ -24,16 +31,34 @@ class Shared(object):
 
 
 def get_haircut(i):
+    """
+    Function get_haircut simulates time when customer
+    gets haircut
+
+        :param i: identification number of customer thread
+        :return:
+    """
     print(f'CUSTOMER: {i} getting haircut')
     sleep(0.02)
 
 
 def cut_hair():
+    """
+    Function get_haircut simulates time when barber
+    cuts customer's hair
+    """
     print("BARBER: cutting hair")
     sleep(0.02)
 
 
 def balk(i):
+    """
+    Function balk represents situation when waiting room is full,
+    so he have to wait to get in,
+
+        :param i: identification number of customer thread
+        :return:
+    """
     print(f'\nCUSTOMER: {i} waiting room is full')
     sleep(randint(25, 30) / 100)
 
@@ -44,7 +69,15 @@ def growing_hair():
 
 
 def customer(i, shared):
+    """
+    Function represents customers behaviour. Customer come to waiting if room is full sleep.
+    Wake up barber and waits for invitation from barber. Then gets new haircut. After it both
+    both wait to complete their work. At the end waits to hair grow again
 
+        :param i: ID of customer
+        :param shared: object of class shared
+        :return:
+    """
     while True:
         shared.mutex.lock()
         if shared.waiting_room == N:
@@ -67,6 +100,14 @@ def customer(i, shared):
 
 
 def barber(shared):
+    """
+    Function barber represents barber. Barber is sleeping, when customer
+    come to get new hair wakes up barber. Barber cuts customer hair and both wait
+    to complete their work.
+
+        :param shared:
+        :return:
+    """
     while True:
         shared.customer.wait()
         shared.barber.signal()
@@ -78,6 +119,10 @@ def barber(shared):
 
 
 def main():
+    """
+    Threads initializing function
+        :return:
+    """
     shared = Shared()
     customers = []
     for i in range(C):
@@ -87,7 +132,7 @@ def main():
         t.join()
 
 
-# Init constants C= number of customers
+# Init constants C= number of customers, N waiting room capacity
 C = 5
 N = 3
 
