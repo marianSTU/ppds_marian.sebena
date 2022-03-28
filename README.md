@@ -64,7 +64,7 @@ Functions cut_hair, get_haircut have similar random time because we suppose thes
 Function bulk have bigger delay because we want secure that waiting room will be free when thread come next time. 
 if time be lower thread could starve. 20-25ms
 
-At the end we implement growing_hair function 0.6ms to simulate time between barber visit.
+At the end we implement growing_hair function 80ms to simulate time between barber visit.
 ##### Example print
 
 ![plot](./img/ll.jpg)
