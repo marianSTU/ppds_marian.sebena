@@ -41,6 +41,7 @@ def get_haircut(i):
     print(f'\nCUSTOMER: {i} gets haircut')
     sleep(randint(5, 10) / 100)
 
+
 def cut_hair():
     """
     Function get_haircut simulates time when barber
@@ -48,6 +49,7 @@ def cut_hair():
     """
     print("\nBARBER: cuts hair")
     sleep(randint(5, 10) / 100)
+
 
 def balk(i):
     """
@@ -93,7 +95,9 @@ def customer(i, shared):
 
             shared.customer_done.signal()
             shared.barber_done.wait()
+            shared.mutex.lock()
             shared.waiting_room -= 1
+            shared.mutex.unlock()
             growing_hair()
 
 
