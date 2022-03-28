@@ -30,7 +30,7 @@ self.barber = Semaphore(0)
 self.customer_done = Semaphore(0)
 self.barber_done = Semaphore(0)
 
-BARBER PART OF CODE:
+CUSTOMER PART OF CODE:
 
 # customer signal that he is in waiting room
 customer.signal() 
