@@ -38,18 +38,16 @@ def get_haircut(i):
         :param i: identification number of customer thread
         :return:
     """
-    print(f'CUSTOMER: {i} getting haircut')
-    sleep(0.02)
-
+    print(f'\nCUSTOMER: {i} gets haircut')
+    sleep(randint(5, 10) / 100)
 
 def cut_hair():
     """
     Function get_haircut simulates time when barber
     cuts customer's hair
     """
-    print("BARBER: cutting hair")
-    sleep(0.02)
-
+    print("\nBARBER: cuts hair")
+    sleep(randint(5, 10) / 100)
 
 def balk(i):
     """
@@ -59,13 +57,13 @@ def balk(i):
         :param i: identification number of customer thread
         :return:
     """
-    print(f'\nCUSTOMER: {i} waiting room is full')
-    sleep(randint(25, 30) / 100)
+    print(f'CUSTOMER: {i} waiting room is full')
+    sleep(randint(20, 25) / 100)
 
 
 def growing_hair():
     # print(f'CUSTOMER: {i} now I my hairstyle is OK')
-    sleep(0.06)
+    sleep(0.08)
 
 
 def customer(i, shared):
