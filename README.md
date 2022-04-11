@@ -26,8 +26,8 @@ So we don't have to use taskmap
 As first, we created three coroutines each with different number of yields to test our scheduler. 
 Foo(2 yields), Bar(1 yield) and Flee(3 yields). 
 
-In our scheduler we create new instance of task(wrapper for aur coroutines) and send it to schedule. After schedule place of
-task in a queue. Then mainloop manage tasks in queue, runs them and reschedule for next correct execution. At the end we create 
+In our scheduler we create new instance of task(wrapper for our coroutines) and send it to schedule. After schedule place of
+task in a queue. Then mainloop manage tasks in queue, runs them, done task and reschedule for next correct execution(To next yield). At the end we create 
 exception to secure correct run after generator exhaustion. Our scheduler we can see on code below.
 
 
