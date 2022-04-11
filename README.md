@@ -1,4 +1,4 @@
-# Documentation exercise 05
+# Documentation exercise 06
 ###### Written by Marián Šebeňa
 ###### Python Interpreter 3.9
 ### Assigment 
