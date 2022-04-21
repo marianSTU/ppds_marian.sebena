@@ -6,50 +6,85 @@ Year: 2022
 License: MIT
 """
 
-
-# Synchronous version with generators
+import asyncio
 import time
-import queue
 
 
-def task(name, queue):
+async def task(name, queue):
     while not queue.empty():
-        delay = queue.get()
+        delay = await queue.get()
         print(f"Task {name} running")
         time_start = time.perf_counter()
-        time.sleep(delay)
+        await asyncio.sleep(delay)
         elapsed = time.perf_counter() - time_start
         print(f"Task {name} elapsed time: {elapsed:.1f}")
-        yield
 
 
-def main():
+async def main():
     # Create the queue of work
-    work_queue = queue.Queue()
+    work_queue = asyncio.Queue()
 
     # Put some work in the queue
-    for work in [5, 1, 5, 2]:
-        work_queue.put(work)
+    for work in [5, 4, 5, 2]:
+        await work_queue.put(work)
 
-    tasks = [task("One", work_queue), task("Two", work_queue)]
-
-    # Run the tasks
-    done = False
     start_time = time.perf_counter()
-    while not done:
-        for t in tasks:
-            try:
-                next(t)
-            except StopIteration:
-                tasks.remove(t)
-                if len(tasks) == 0:
-                    done = True
+    await asyncio.gather(
+        task("One", work_queue),
+        task("Two", work_queue),
+    )
     elapsed = time.perf_counter() - start_time
     print(f"\nTotal elapsed time: {elapsed:.1f}")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
+
+
+# Synchronous version with generators
+
+# import time
+# import queue
+#
+#
+# def task(name, queue):
+#     while not queue.empty():
+#         delay = queue.get()
+#         print(f"Task {name} running")
+#         time_start = time.perf_counter()
+#         time.sleep(delay)
+#         elapsed = time.perf_counter() - time_start
+#         print(f"Task {name} elapsed time: {elapsed:.1f}")
+#         yield
+#
+#
+# def main():
+#     # Create the queue of work
+#     work_queue = queue.Queue()
+#
+#     # Put some work in the queue
+#     for work in [5, 1, 5, 2]:
+#         work_queue.put(work)
+#
+#     tasks = [task("One", work_queue), task("Two", work_queue)]
+#
+#     # Run the tasks
+#     done = False
+#     start_time = time.perf_counter()
+#     while not done:
+#         for t in tasks:
+#             try:
+#                 next(t)
+#             except StopIteration:
+#                 tasks.remove(t)
+#                 if len(tasks) == 0:
+#                     done = True
+#     elapsed = time.perf_counter() - start_time
+#     print(f"\nTotal elapsed time: {elapsed:.1f}")
+#
+#
+# if __name__ == "__main__":
+#     main()
 
 # Synchronous version
 
