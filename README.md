@@ -13,6 +13,11 @@ When you click on links below you will be redirected on resource web page: </br>
 **[RuntimeError](https://stackoverflow.com/questions/45600579/asyncio-event-loop-is-closed-when-getting-loop)** <br/>
 **[Python JSON](https://www.w3schools.com/python/python_json.asp)** <br/>
 **[Async http requests](https://www.twilio.com/blog/asynchronous-http-requests-in-python-with-aiohttp)** <br/>
+### Data Copyright:
+NHL and the NHL Shield are registered trademarks of the
+National Hockey League. NHL and NHL team marks are the property of
+the NHL and its teams. © NHL 2022. All Rights Reserved.
+
 ### Solution description 
 In this exercise we implemented two variations of application synchronous(sync.py) and asynchronous(async.py).
 Application make GET request on API, which provides NHL stats and receive JSON. We take basic data from JSON and print it
