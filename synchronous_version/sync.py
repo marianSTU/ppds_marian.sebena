@@ -7,7 +7,7 @@ Year: 2022
 License: MIT
 
 Application description: Printing all NHL teams(1918 to present) and
-    their location from JSON available website
+    their location from JSON available on website
     https://statsapi.web.nhl.com/api/v1/franchises/.
     Using sync programming.
 
@@ -21,14 +21,16 @@ import time
 
 def get_franchise(team_id, task_id):
     """
-    Native coroutine that make a get request to gain data
-    about NHL Team with team_id
+    Coroutine that make a get request to gain data
+    about NHL Team with team_id. Counts time of
+    every request
 
     :param team_id: NHL team_id from 1 to 39
     :param task_id: identification of currently running task
     :return:
     """
     x = time.time()
+    print(f'TASK ID: {task_id} RUNS')
     url = f'https://statsapi.web.nhl.com/api/v1/franchises/{team_id}'
     resp = requests.get(url)
     franchise = resp.json()
@@ -45,10 +47,12 @@ def main():
     :return:
     """
     start = time.time()
-    for number in range(1, 39, 2):
-        get_franchise(number, "[0]")
-        get_franchise(number + 1, "[1]")
-    print("--- %s seconds ---" % (time.time() - start))
+    for team_id in range(1, 40, 2):
+        get_franchise(team_id, "[0]")
+        # Secures last iteration, because there is not team with id = 41
+        if team_id + 1 < 40:
+            get_franchise(team_id + 1, "[1]")
+    print(f'Program execution time {time.time() - start} seconds')
 
 
 if __name__ == "__main__":
