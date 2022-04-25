@@ -34,6 +34,7 @@ def main():
     img_array = plt.imread("imgs_to_process/my_team.jpg")
 
     start = time.time()
+    grayscale(img_array)
     print(f'Execution time on CPU {time.time()-start}s')
 
     plt.imshow(img_array)
