@@ -57,7 +57,7 @@ value. Size of images is equal. Used pattern with each image we can see below.
 
 ###### IMG 1 (team where I played football)
 ![plot](./Examples/imgs_to_process/my_team.jpg).
-###### IMG 2 (lake where I goes for relax and fishing)
+###### IMG 2 (lake where I go for relax and fishing)
 ![plot](./Examples/imgs_to_process/vnt.jpg).
 ###### IMG 3 (Connected images)
 ![plot](./imgs/connected.jpg)
