@@ -11,7 +11,7 @@ When you click on links below you will be redirected on resource web page: </br>
 **[UIM/PPDS](https://uim.fei.stuba.sk/predmet/i-ppds/)** <br/>
 **[Read image as array](https://www.delftstack.com/howto/matplotlib/matplotlib-imread-in-python/)** <br/>
 **[NTSC formula](http://support.ptc.com/help/mathcad/en/index.html#page/PTC_Mathcad_Help/example_grayscale_and_color_in_images.html)** <br/>
-
+**[Matplotlib using examples](https://www.delftstack.com/howto/matplotlib/matplotlib-imread-in-python/)** <br/>
 ###### Note (Image sizes in documentation are different because we used snipping tool)
 ##### Program basic description
 We implemented 3 programs. Converting from RGB to Grayscale using CPU(<b>grayscale_on_CPU.py</b>), GPU(<b>grayscale_on_GPU.py</b>)
