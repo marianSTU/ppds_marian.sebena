@@ -54,4 +54,6 @@ def main():
     plt.axis('off')
     plt.show()
 
-main()
+
+if __name__ == '__main__':
+    main()
