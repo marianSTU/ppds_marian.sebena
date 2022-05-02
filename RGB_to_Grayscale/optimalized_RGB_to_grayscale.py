@@ -1,5 +1,6 @@
 """
 Authors: Mgr. Ing. Matúš Jókay, PhD.
+         Ing. Roderik Plozsek
          Bc. Marián Šebeňa
 University: STU Slovak Technical University in Bratislava
 Faculty: FEI Faculty of Electrical Engineering and Information Technology
@@ -12,7 +13,9 @@ import time
 from numba import cuda
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
+ARRAYS = 6
 
 @cuda.jit
 def my_kernel_2d(data):
@@ -37,18 +40,56 @@ def main():
     :return:
     """
     img_array = plt.imread("imgs_to_process/large.jpg")
-    start = time.time()
 
+    data = [[],[],[],[],[],[]]
+    data_gpu = []
+    gpu_out = []
+    streams = []
+    start_events = []
+    end_events = []
+    arrays_len = len(img_array) / ARRAYS
+    k = 0
+    cnt = 0
+
+    for x in range(len(img_array)):
+        if cnt == arrays_len:
+            k += 1
+            cnt = 0
+        cnt += 1
+        data[k].append(img_array[x])
+
+    for _ in range(ARRAYS):
+        streams.append(cuda.stream())
+        start_events.append(cuda.event())
+        end_events.append(cuda.event())
+
+    for k in range(ARRAYS):
+        data_gpu.append(cuda.to_device(data[k], stream=streams[k] ))
+
+    start = time.time()
     tpb = (32, 32)
     bpg_x = math.ceil(img_array.shape[0] / tpb[0])
     bpg_y = math.ceil(img_array.shape[1] / tpb[1])
     bpg = (bpg_x, bpg_y)
-    my_kernel_2d[bpg, tpb](img_array)
-    print(f'Execution time with cuda {time.time()-start}s')
 
-    plt.imshow(img_array)
-    plt.axis('off')
-    plt.show()
+    for k in range(ARRAYS):
+        start_events[k].record(streams[k])
+        my_kernel_2d[bpg, tpb, streams[k]](data_gpu[k])
+
+    for k in range(ARRAYS):
+        end_events[k].record(streams[k])
+
+    for k in range(ARRAYS):
+        gpu_out.append(data_gpu[k].copy_to_host(stream=streams[k]))
+
+    kernel_times = []
+
+    for k in range(ARRAYS):
+        kernel_times.append(cuda.event_elapsed_time(start_events[k], end_events[k]))
+
+    print(f'{time.time() - start}')
+    print('Mean kernel duration : %f' % np.mean(kernel_times))
+    print('Mean kernel standard deviation : %f' % np.std(kernel_times))
 
 
 if __name__ == '__main__':
