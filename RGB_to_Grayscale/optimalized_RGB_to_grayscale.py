@@ -34,13 +34,15 @@ def my_kernel_2d(data):
 
 def main():
     """
-    Main function of programs reads image to np array,
+    Main function of programs reads image to array,
     declare threads per block, blocks axis per grid,
-    count execution time and show converted image
+    declare streams, secure data sending between device
+    and host, count execution time by events for each stream
+    and secure async run
     :return:
     """
     img_array = plt.imread("imgs_to_process/large.jpg")
-
+    # image array will be split to 6 smaller arrays
     data = [[],[],[],[],[],[]]
     data_gpu = []
     gpu_out = []
@@ -87,9 +89,9 @@ def main():
     for k in range(ARRAYS):
         kernel_times.append(cuda.event_elapsed_time(start_events[k], end_events[k]))
 
-    print(f'{time.time() - start}')
-    print('Mean kernel duration : %f' % np.mean(kernel_times))
-    print('Mean kernel standard deviation : %f' % np.std(kernel_times))
+    print(f'Program duration: {time.time() - start}s')
+    print('Mean kernel duration : %f ms' % np.mean(kernel_times))
+    print('Mean kernel standard deviation : %f ms' % np.std(kernel_times))
 
 
 if __name__ == '__main__':
