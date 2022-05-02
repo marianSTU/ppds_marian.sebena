@@ -17,6 +17,7 @@ import numpy as np
 
 ARRAYS = 6
 
+
 @cuda.jit
 def my_kernel_2d(data):
     """
@@ -43,7 +44,7 @@ def main():
     """
     img_array = plt.imread("imgs_to_process/large.jpg")
     # image array will be split to 6 smaller arrays
-    data = [[],[],[],[],[],[]]
+    data = [[], [], [], [], [], []]
     data_gpu = []
     gpu_out = []
     streams = []
@@ -66,7 +67,7 @@ def main():
         end_events.append(cuda.event())
 
     for k in range(ARRAYS):
-        data_gpu.append(cuda.to_device(data[k], stream=streams[k] ))
+        data_gpu.append(cuda.to_device(data[k], stream=streams[k]))
 
     start = time.time()
     tpb = (32, 32)
